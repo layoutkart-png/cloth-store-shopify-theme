@@ -1,0 +1,123 @@
+<div class="product-page container section">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px;" class="product-grid">
+    <!-- LEFT: Image gallery with thumbnails -->
+    <div class="product-gallery">
+      <div class="main-image" style="border-radius: 12px; overflow: hidden; margin-bottom: 15px;">
+        <img id="main-product-image" src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title }}" style="width: 100%; aspect-ratio: 3/4; object-fit: cover;">
+      </div>
+      <div class="thumbnails" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+        {% for image in product.images limit: 4 %}
+          <img src="{{ image | image_url: width: 200 }}" alt="{{ product.title }}"
+               onclick="document.getElementById('main-product-image').src='{{ image | image_url: width: 800 }}'"
+               style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid {% if forloop.first %}#000{% else %}transparent{% endif %};">
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- RIGHT: Product info -->
+    <div class="product-info">
+      {% if product.compare_at_price > product.price %}
+        <span class="badge-sale">SAVE {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%</span>
+      {% endif %}
+
+      <h1 style="font-size: 32px; margin: 10px 0;">{{ product.title }}</h1>
+
+      <div class="price-row" style="display: flex; align-items: center; gap: 12px; margin: 15px 0;">
+        <span style="font-size: 28px; font-weight: 900;">{{ product.price | money }}</span>
+        {% if product.compare_at_price > product.price %}
+          <span style="text-decoration: line-through; color: #999; font-size: 18px;">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Social proof urgency -->
+      <div class="social-proof" style="background: #fff3f3; border-radius: 8px; padding: 12px 16px; margin: 15px 0; font-size: 14px;">
+        🔥 <strong>{{ section.settings.bought_count }}</strong> people bought this in the last 24 hours
+      </div>
+
+      <!-- Countdown timer -->
+      <div class="offer-timer" style="background: #000; color: #fff; border-radius: 8px; padding: 15px; margin: 15px 0; text-align: center;">
+        <p style="margin: 0 0 8px; font-size: 14px;">⏰ Offer ends in:</p>
+        <div id="countdown-{{ section.id }}" style="font-size: 24px; font-weight: 700; font-family: 'Josefin Sans', sans-serif; letter-spacing: 2px;">
+          <span id="cd-h-{{ section.id }}">23</span>:<span id="cd-m-{{ section.id }}">59</span>:<span id="cd-s-{{ section.id }}">59</span>
+        </div>
+      </div>
+      <script>
+        (function() {
+          var end = Date.now() + ({{ section.settings.timer_hours | default: 24 }} * 3600 * 1000);
+          var sid = "{{ section.id }}";
+          setInterval(function() {
+            var rem = Math.max(0, end - Date.now());
+            var h = Math.floor(rem / 3600000), m = Math.floor(rem % 3600000 / 60000), s = Math.floor(rem % 60000 / 1000);
+            document.getElementById('cd-h-' + sid).textContent = String(h).padStart(2,'0');
+            document.getElementById('cd-m-' + sid).textContent = String(m).padStart(2,'0');
+            document.getElementById('cd-s-' + sid).textContent = String(s).padStart(2,'0');
+          }, 1000);
+        })();
+      </script>
+
+      <!-- Variant picker (Size) -->
+      {% form 'product', product %}
+        {% unless product.has_only_default_variant %}
+          {% for option in product.options_with_values %}
+            <div style="margin: 20px 0;">
+              <label style="font-weight: 700; display: block; margin-bottom: 10px;">{{ option.name }}</label>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                {% for value in option.values %}
+                  <label style="border: 2px solid #ddd; border-radius: 8px; padding: 10px 20px; cursor: pointer; font-weight: 600;">
+                    <input type="radio" name="options[{{ option.name }}]" value="{{ value }}" {% if forloop.first %}checked{% endif %} style="display: none;">
+                    {{ value }}
+                  </label>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        {% endunless %}
+
+        <div style="display: flex; gap: 12px; margin: 25px 0;">
+          <input type="number" name="quantity" value="1" min="1" style="width: 70px; padding: 14px; border: 2px solid #ddd; border-radius: 980px; text-align: center; font-size: 16px;">
+          <button type="submit" name="add" class="btn" style="flex: 1;">Add to Cart</button>
+        </div>
+      {% endform %}
+
+      <!-- Custom liquid / trust badges -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; font-size: 14px;">
+        <div>✅ Free shipping across India</div>
+        <div>✅ 7-day easy returns</div>
+        <div>✅ COD available</div>
+        <div>✅ 1-year support</div>
+      </div>
+
+      <div class="product-description" style="margin-top: 25px; color: #555;">
+        {{ product.description }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    .product-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Main Product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "bought_count",
+      "label": "\"Bought in 24h\" count",
+      "default": "23"
+    },
+    {
+      "type": "range",
+      "id": "timer_hours",
+      "label": "Offer timer (hours)",
+      "min": 1,
+      "max": 72,
+      "default": 24
+    }
+  ]
+}
+{% endschema %}
