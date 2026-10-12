@@ -1,0 +1,29 @@
+<div class="announcement-bar" style="background: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }}; text-align: center; padding: 10px; font-size: 14px;">
+  {{ section.settings.text }}
+</div>
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Announcement text",
+      "default": "🎉 Diwali Sale — Flat 20% OFF on all themes!"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    }
+  ]
+}
+{% endschema %}

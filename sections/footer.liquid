@@ -1,0 +1,69 @@
+<footer class="site-footer" style="background: #1a1a1a; color: #fff; padding: 60px 20px 20px;">
+  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;">
+    <div>
+      <h3>{{ shop.name }}</h3>
+      <p style="color: #aaa; font-size: 14px;">{{ section.settings.about_text }}</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      {% for link in linklists[section.settings.footer_menu].links %}
+        <p><a href="{{ link.url }}" style="color: #aaa; text-decoration: none; font-size: 14px;">{{ link.title }}</a></p>
+      {% endfor %}
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p style="color: #aaa; font-size: 14px;">📞 {{ section.settings.phone }}</p>
+      <p style="color: #aaa; font-size: 14px;">✉️ {{ section.settings.email }}</p>
+      <p style="color: #aaa; font-size: 14px;">📍 {{ section.settings.address }}</p>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p style="color: #aaa; font-size: 14px;">Get updates on new arrivals!</p>
+      {% form 'customer', class: 'newsletter-form' %}
+        <input type="email" name="contact[email]" placeholder="Your email" style="padding: 10px; width: 100%; border-radius: 5px; border: none; margin-bottom: 10px;">
+        <button type="submit" style="padding: 10px 20px; background: #e63946; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Subscribe</button>
+      {% endform %}
+    </div>
+  </div>
+  <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #333; color: #666; font-size: 12px;">
+    © {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved. | Theme by LayoutKart
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "about_text",
+      "label": "About text",
+      "default": "Premium fashion for every Indian wardrobe."
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer menu",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone",
+      "default": "+91 90055 13336"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "support@layoutkart.com"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "Prayagraj, Uttar Pradesh, India"
+    }
+  ]
+}
+{% endschema %}

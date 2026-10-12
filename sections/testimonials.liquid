@@ -1,0 +1,63 @@
+<div class="testimonials" style="padding: 60px 20px; background: #f9f9f9;">
+  <h2 style="text-align: center; margin-bottom: 40px; font-size: 32px;">{{ section.settings.heading }}</h2>
+  <div style="max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+    {% for block in section.blocks %}
+      <div style="background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <div style="color: #ffc107; font-size: 20px; margin-bottom: 15px;">★★★★★</div>
+        <p style="font-style: italic; color: #555; margin-bottom: 15px;">"{{ block.settings.review }}"</p>
+        <p style="font-weight: bold; margin: 0;">{{ block.settings.name }}</p>
+        <p style="color: #999; font-size: 13px; margin: 5px 0 0;">{{ block.settings.location }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review",
+          "default": "Amazing quality! The fabric is premium and delivery was super fast."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Priya Sharma"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Delhi"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

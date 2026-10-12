@@ -1,0 +1,72 @@
+<div class="hero-banner" style="position: relative; text-align: center; padding: 100px 20px; background: {% if section.settings.bg_image %}url('{{ section.settings.bg_image | image_url: width: 1920 }}') center/cover{% else %}{{ section.settings.bg_color }}{% endif %};">
+  <div class="hero-content" style="position: relative; z-index: 2;">
+    <h1 style="font-size: 48px; color: {{ section.settings.heading_color }}; margin-bottom: 15px;">{{ section.settings.heading }}</h1>
+    <p style="font-size: 20px; color: {{ section.settings.text_color }}; margin-bottom: 30px;">{{ section.settings.subtext }}</p>
+    <a href="{{ section.settings.button_link }}" style="display: inline-block; padding: 15px 40px; background: {{ section.settings.button_color }}; color: #fff; text-decoration: none; border-radius: 5px; font-size: 18px; font-weight: bold;">{{ section.settings.button_text }}</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Fashion Collection 2026"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Discover the latest trends in ethnic & western wear"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color (if no image)",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#555555"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}
