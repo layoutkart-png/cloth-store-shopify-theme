@@ -1,0 +1,43 @@
+<div class="cart-page container section" style="max-width: 900px;">
+  <h1 style="text-align: center; margin-bottom: 30px;">Your Cart</h1>
+
+  {% if cart.item_count > 0 %}
+    <form action="/cart" method="post">
+      {% for item in cart.items %}
+        <div style="display: flex; gap: 20px; padding: 20px; border: 1px solid #eee; border-radius: 12px; margin-bottom: 15px;">
+          <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title }}" style="width: 100px; height: 130px; object-fit: cover; border-radius: 8px;">
+          <div style="flex: 1;">
+            <h3 style="margin: 0 0 5px; font-size: 17px;">{{ item.product.title }}</h3>
+            {% unless item.variant.title == 'Default Title' %}
+              <p style="color: #666; font-size: 14px; margin: 0 0 10px;">{{ item.variant.title }}</p>
+            {% endunless %}
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <a href="/cart/change?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}" style="border: 1px solid #ddd; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #333;">−</a>
+                <span style="font-weight: 700;">{{ item.quantity }}</span>
+                <a href="/cart/change?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}" style="border: 1px solid #ddd; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #333;">+</a>
+              </div>
+              <div style="text-align: right;">
+                <p style="font-weight: 900; margin: 0;">{{ item.line_price | money }}</p>
+                <a href="/cart/change?line={{ forloop.index }}&quantity=0" style="color: #999; font-size: 13px;">Remove</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+      <div style="text-align: right; margin-top: 30px; padding: 20px; background: #f5f5f7; border-radius: 12px;">
+        <p style="font-size: 20px; margin: 0 0 15px;">Subtotal: <strong>{{ cart.total_price | money }}</strong></p>
+        <p style="color: #666; font-size: 13px; margin: 0 0 15px;">Shipping & taxes calculated at checkout</p>
+        <button type="submit" name="checkout" class="btn" style="width: 100%; max-width: 300px;">Proceed to Checkout</button>
+      </div>
+    </form>
+  {% else %}
+    <div style="text-align: center; padding: 60px 20px;">
+      <p style="font-size: 60px; margin: 0;">🛒</p>
+      <h2>Your cart is empty</h2>
+      <p style="color: #666;">Looks like you haven't added anything yet.</p>
+      <a href="/collections/all" class="btn" style="margin-top: 20px;">Continue Shopping</a>
+    </div>
+  {% endif %}
+</div>
