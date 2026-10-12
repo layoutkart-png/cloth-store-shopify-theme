@@ -6,6 +6,10 @@
         <div style="position: relative; overflow: hidden; border-radius: 10px; aspect-ratio: 3/4;">
           {% if block.settings.image %}
             <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+          {% elsif block.settings.title == 'Men' %}
+            <img src="{{ 'category-men-0.webp' | asset_url }}" alt="Men" style="width: 100%; height: 100%; object-fit: cover;">
+          {% elsif block.settings.title == 'Women' %}
+            <img src="{{ 'category-women-0.webp' | asset_url }}" alt="Women" style="width: 100%; height: 100%; object-fit: cover;">
           {% endif %}
           <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.7));">
             <h3 style="color: #fff; margin: 0; font-size: 24px;">{{ block.settings.title }}</h3>
